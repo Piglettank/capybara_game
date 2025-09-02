@@ -30,6 +30,7 @@ class CapybaraGame extends FlameGame
     player.position = Vector2(400, size.y - 48 * 2);
     crocodile.position = Vector2(200, size.y - 48 * 2);
     clementine.position = Vector2(800, size.y - 48 * 2);
+    obstacle.position = Vector2(600, size.y - 48 * 2);
 
     int grounds = 0;
     double groundXPos = 0;

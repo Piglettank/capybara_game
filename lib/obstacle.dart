@@ -15,4 +15,13 @@ class Obstacle extends SpriteComponent
     final image = await Flame.images.load('egg.jpg');
     sprite = Sprite(image);
   }
+
+  @override
+  void update(double dt) {
+    position.x -= game.gameSpeed * dt;
+    if (position.x < -size.x) {
+      position.x = game.totalGrounds * size.x + position.x;
+    }
+    super.update(dt);
+  }
 }
