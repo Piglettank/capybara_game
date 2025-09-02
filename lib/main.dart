@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:capybara_game/clementine.dart';
 import 'package:capybara_game/crocodile.dart';
 import 'package:capybara_game/ground.dart';
+import 'package:capybara_game/obstacle.dart';
 import 'package:capybara_game/player.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
@@ -17,6 +18,8 @@ class CapybaraGame extends FlameGame
   final Player player = Player();
   final Crocodile crocodile = Crocodile();
   final double gameSpeed = 200;
+  final Ground ground = Ground();
+  final Obstacle obstacle = Obstacle();
   final double gravity = 100;
   final int totalGrounds = 30;
 
@@ -40,5 +43,6 @@ class CapybaraGame extends FlameGame
     add(player);
     add(crocodile);
     add(clementine);
+    add(obstacle);
   }
 }
