@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:capybara_game/clementine.dart';
+import 'package:capybara_game/crocodile.dart';
 import 'package:capybara_game/ground.dart';
 import 'package:capybara_game/player.dart';
 import 'package:flame/game.dart';
@@ -13,15 +15,30 @@ void main() {
 class CapybaraGame extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   final Player player = Player();
-  final Ground ground = Ground();
+  final Crocodile crocodile = Crocodile();
+  final double gameSpeed = 200;
   final double gravity = 100;
+  final int totalGrounds = 30;
 
   @override
   FutureOr<void> onLoad() {
-    player.position = Vector2(100, size.y * 0.70);
-    ground.position = Vector2(0, size.y * 0.80);
-    debugMode = true;
+    Clementine clementine = Clementine();
+
+    player.position = Vector2(400, size.y - 48 * 2);
+    crocodile.position = Vector2(200, size.y - 48 * 2);
+    clementine.position = Vector2(800, size.y - 48 * 2);
+
+    int grounds = 0;
+    double groundXPos = 0;
+    while (grounds < totalGrounds) {
+      final ground = Ground();
+      ground.position = Vector2(groundXPos, size.y - 48);
+      add(ground);
+      groundXPos += 48;
+      grounds++;
+    }
     add(player);
-    add(ground);
+    add(crocodile);
+    add(clementine);
   }
 }

@@ -5,23 +5,20 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 
-class Ground extends SpriteComponent
+class Clementine extends SpriteComponent
     with HasGameReference<CapybaraGame>, CollisionCallbacks {
-  Ground() : super(size: Vector2(48, 48), children: [RectangleHitbox()]);
+  Clementine() : super(size: Vector2(48, 48), children: [CircleHitbox()]);
 
   @override
   FutureOr<void> onLoad() async {
     super.onLoad();
-    final image = await Flame.images.load('ground.png');
+    final image = await Flame.images.load('egg.jpg');
     sprite = Sprite(image, srcSize: Vector2(48, 48));
   }
 
   @override
   void update(double dt) {
-    position.x -= game.gameSpeed * dt;
-    if (position.x < -size.x) {
-      position.x = game.totalGrounds * size.x + position.x;
-    }
     super.update(dt);
+    position.x -= game.gameSpeed * dt;
   }
 }

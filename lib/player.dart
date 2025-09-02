@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:capybara_game/clementine.dart';
 import 'package:capybara_game/ground.dart';
 import 'package:capybara_game/main.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 class Player extends SpriteAnimationComponent
@@ -69,6 +72,15 @@ class Player extends SpriteAnimationComponent
     if (other is Ground) {
       isGrounded = true;
       velocity = Vector2(velocity.x, 0);
+    }
+    if (other is Clementine) {
+      game.crocodile.add(
+        MoveByEffect(
+          Vector2(-30, 0),
+          EffectController(duration: 1, curve: Curves.easeInOut),
+        ),
+      );
+      game.remove(other);
     }
   }
 }
