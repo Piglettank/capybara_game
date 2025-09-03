@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:capybara_game/clementine.dart';
 import 'package:capybara_game/crocodile.dart';
@@ -19,31 +20,53 @@ class CapybaraGame extends FlameGame
   final Crocodile crocodile = Crocodile();
   final double gameSpeed = 200;
   final Ground ground = Ground();
-  final Obstacle obstacle = Obstacle();
-  final double gravity = 100;
+  final double gravity = 900;
   final int totalGrounds = 30;
+  late Timer obstacleTimer;
+  late Timer clementineTimer;
+  late double commonYPos;
 
   @override
   FutureOr<void> onLoad() {
-    Clementine clementine = Clementine();
+    commonYPos = size.y - 48 * 2;
 
-    player.position = Vector2(400, size.y - 48 * 2);
-    crocodile.position = Vector2(200, size.y - 48 * 2);
-    clementine.position = Vector2(800, size.y - 48 * 2);
-    obstacle.position = Vector2(600, size.y - 48 * 2);
+    player.position = Vector2(400, commonYPos);
+    crocodile.position = Vector2(200, commonYPos);
+    obstacleTimer = Timer(Duration(seconds: 5), _spawnObstacle);
+    clementineTimer = Timer(Duration(seconds: 1), _spawnClementine);
 
     int grounds = 0;
     double groundXPos = 0;
     while (grounds < totalGrounds) {
       final ground = Ground();
-      ground.position = Vector2(groundXPos, size.y - 48);
+      ground.position = Vector2(groundXPos, commonYPos + 48);
       add(ground);
       groundXPos += 48;
       grounds++;
     }
     add(player);
     add(crocodile);
-    add(clementine);
+  }
+
+  void _spawnClementine() {
+    Clementine obstacle = Clementine();
+    obstacle.position = Vector2(size.x + 48, commonYPos);
     add(obstacle);
+    final newDuration = Random().nextDouble() * 5 + 1;
+    obstacleTimer = Timer(
+      Duration(seconds: newDuration.round()),
+      _spawnClementine,
+    );
+  }
+
+  void _spawnObstacle() {
+    Obstacle obstacle = Obstacle();
+    obstacle.position = Vector2(size.x + 48, commonYPos);
+    add(obstacle);
+    final newDuration = Random().nextDouble() * 5 + 1;
+    obstacleTimer = Timer(
+      Duration(seconds: newDuration.round()),
+      _spawnObstacle,
+    );
   }
 }

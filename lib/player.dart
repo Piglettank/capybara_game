@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:capybara_game/clementine.dart';
+import 'package:capybara_game/crocodile.dart';
 import 'package:capybara_game/ground.dart';
 import 'package:capybara_game/main.dart';
+import 'package:capybara_game/obstacle.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -13,7 +15,7 @@ class Player extends SpriteAnimationComponent
     with KeyboardHandler, HasGameReference<CapybaraGame>, CollisionCallbacks {
   Vector2 velocity = Vector2.zero();
   double speed = 50;
-  double jumpForce = 100;
+  double jumpForce = 500;
   double startingYPosition = 0;
   bool isGrounded = false;
   Player() : super(size: Vector2(50, 50), children: [RectangleHitbox()]);
@@ -68,15 +70,27 @@ class Player extends SpriteAnimationComponent
     PositionComponent other,
   ) {
     super.onCollisionStart(intersectionPoints, other);
-    print('collision');
     if (other is Ground) {
       isGrounded = true;
       velocity = Vector2(velocity.x, 0);
+    }
+    if (other is Crocodile) {
+      print('YOU LOSE! ! ! ! !');
+      game.remove(other);
     }
     if (other is Clementine) {
       game.crocodile.add(
         MoveByEffect(
           Vector2(-30, 0),
+          EffectController(duration: 1, curve: Curves.easeInOut),
+        ),
+      );
+      game.remove(other);
+    }
+    if (other is Obstacle) {
+      game.crocodile.add(
+        MoveByEffect(
+          Vector2(30, 0),
           EffectController(duration: 1, curve: Curves.easeInOut),
         ),
       );
